@@ -15,70 +15,41 @@ export default class Signin extends Component {
   componentWillMount() {
     // if (!Meteor.user()) browserHistory.push('/signin');
   }
-  
-  componentDidMount() {
-    this.updateSize();
-    window.addEventListener('resize', this.updateSize.bind(this));
-  }
-
-  componentWillUnmount() {
-      window.removeEventListener('resize', this.updateSize.bind(this));
-  }
-
-  updateSize() {
-      try {
-          this.setState({ width: window.innerWidth, height: window.innerHeight});
-      } catch (ignore) {
-      }
-  }
 
   handleSubmit(event) {
     event.preventDefault();
-    // var id = ReactDOM.findDOMNode(this.refs.adminId).children[1].value.trim();
-    var pwd = ReactDOM.findDOMNode(this.refs.adminPwd).children[1].value.trim();
-    var handleError = (err) => {
+    
+    var userName = ReactDOM.findDOMNode(this.refs.userName).children[1].value,
+        password = ReactDOM.findDOMNode(this.refs.password).children[1].value;
+
+    var handleSignin = (err) => {
       if (err) {
-        document.getElementById('error-hint').innerHTML = '账号/密码错误';
         console.log(err.reason);
       } else {
-        console.log("登录成功！");
-        browserHistory.push('/');
-      } 
+        console.log('登录成功');
+      }
     }
-    Meteor.loginWithPassword('tennis', pwd, handleError.bind(this));
-  }
 
-  clearInput() {
-    // ReactDOM.findDOMNode(this.refs.adminId).children[1].value = '';
-    ReactDOM.findDOMNode(this.refs.adminPwd).children[1].value = '';
-    this.clearError();
-  }
-
-  clearError() {
-    document.getElementById('error-hint').innerHTML = '';
+    try {
+      Meteor.loginWithPassword(userName, password, handleSignin.bind(this));
+    } catch(e) {
+      console.log(e);
+    }
   }
 
   render() {
     return (
-      <div className="container-fluid">
-        <div className="col-md-3 col-sm-2 col-xs-0" />
-        <div className="col-md-6 col-sm-8 col-xs-12" style={{height: this.state.height, display: "flex", alignItems: "center"}}>
-          <div className="col-md-12 col-sm-12 col-xs-12">
-            <Paper className="col-md-12 col-sm-12 col-xs-12" style={{paddingLeft: 30, paddingRight: 30, paddingBottom: 30, marginBottom: 100}}>
-              <form onSubmit={this.handleSubmit.bind(this)}>
-                {/* <TextField fullWidth={true} floatingLabelText="管理员账号" type="text" ref="adminId"/><br /> */}
-                <TextField fullWidth={true} floatingLabelText="密码" type="password" ref="adminPwd" onChange={this.clearError.bind(this)}/><br />
-                <div id="error-hint" style={{height: 10, fontSize: 10, marginTop: -5, marginBottom: 16, color: "red"}}></div>
-                <div className="col-md-12 col-sm-12 col-xs-12" style={{display: "flex", justifyContent: "center"}}>
-                  <RaisedButton label="确定" primary={true} type="submit" style={{marginRight: 30, backgroundColor: "#1fbcd3"}}/>
-                  <RaisedButton label="清空" onClick={this.clearInput.bind(this)}/>
-                </div>
-              </form>
-            </Paper>
-          </div>
+      <form className="col-sm-12 col-xs-12" onSubmit={this.handleSubmit.bind(this)} style={{paddingLeft: 15, paddingRight: 15}}>
+        <TextField fullWidth={true} floatingLabelText="用户名" type="text" ref="userName"
+          errorText={this.state.userNameError} 
+        /><br />
+        <TextField fullWidth={true} floatingLabelText="密码" type="password" ref="password"
+          errorText={this.state.passwordError} 
+        /><br />
+        <div className="col-sm-12 col-xs-12" style={{display: "flex", justifyContent: "center", marginTop: 30}}>
+          <RaisedButton label="登录" primary={true} type="submit" style={{marginRight: 30, backgroundColor: "#1fbcd3"}}/>
         </div>
-        <div className="col-md-3 col-sm-2 col-xs-0" />
-      </div>
+      </form>
     );
   }
 }
