@@ -19,6 +19,7 @@ export default class Signup extends Component {
     var profile = {
       studentId: ReactDOM.findDOMNode(this.refs.studentId).children[1].value,
       phone: ReactDOM.findDOMNode(this.refs.phone).children[1].value,
+      permission: 3,
     }
 
     var handleSignup = (err) => {
@@ -26,6 +27,7 @@ export default class Signup extends Component {
         console.log(err.reason);
       } else {
         console.log('注册成功');
+        browserHistory.push('/profile');
       }
     }
 
@@ -118,34 +120,37 @@ export default class Signup extends Component {
 
   render() {
     return (
-      <form className="col-sm-12 col-xs-12" onSubmit={this.handleSubmit.bind(this)} style={{paddingLeft: 15, paddingRight: 15}}>
-        <TextField fullWidth={true} floatingLabelText="用户名" type="text" ref="userName" 
-          onBlur={this.checkUserNameValidation.bind(this)}
-          errorText={this.state.userNameError} 
-        /><br />
-        <TextField fullWidth={true} floatingLabelText="密码" type="password" ref="password"
-          onBlur={this.checkPasswordValidation.bind(this)}
-          errorText={this.state.passwordError} 
-        /><br />
-        <TextField fullWidth={true} floatingLabelText="确认密码" type="password" ref="confirmPwd" 
-          onBlur={this.checkConfirmPwdValidation.bind(this)}
-          errorText={this.state.confirmPwdError} 
-        /><br />
-        <TextField fullWidth={true} floatingLabelText="学号" type="number" ref="studentId" 
-          onBlur={this.checkStudentIdValidation.bind(this)}
-          errorText={this.state.studentIdError} 
-        /><br />
-        <TextField fullWidth={true} floatingLabelText="手机" type="number" ref="phone" 
-          onBlur={this.checkPhoneValidation.bind(this)}
-          errorText={this.state.phoneError} 
-        /><br />
-        <TextField fullWidth={true} floatingLabelText="邮箱" type="text" ref="email" 
-          onBlur={this.checkEmailValidation.bind(this)}
-          errorText={this.state.emailError} 
-        /><br />
-        <div className="col-sm-12 col-xs-12" style={{display: "flex", justifyContent: "center", marginTop: 30}}>
-          <RaisedButton label="注册" primary={true} type="submit" style={{marginRight: 30, backgroundColor: "#1fbcd3"}}/>
-          <RaisedButton label="清空" default={true} onClick={this.clearInput.bind(this)}/>
+      <form className="col-sm-12 col-xs-12" onSubmit={this.handleSubmit.bind(this)} 
+        style={{paddingLeft: 15, paddingRight: 15, height: "100%", display: "flex", alignItems: "center"}}>
+        <div className="col-sm-12 col-xs-12">
+          <TextField fullWidth={true} floatingLabelText="用户名" type="text" ref="userName" 
+            onBlur={this.checkUserNameValidation.bind(this)}
+            errorText={this.state.userNameError} 
+          /><br />
+          <TextField fullWidth={true} floatingLabelText="密码" type="password" ref="password"
+            onBlur={this.checkPasswordValidation.bind(this)}
+            errorText={this.state.passwordError} 
+          /><br />
+          <TextField fullWidth={true} floatingLabelText="确认密码" type="password" ref="confirmPwd" 
+            onBlur={this.checkConfirmPwdValidation.bind(this)}
+            errorText={this.state.confirmPwdError} 
+          /><br />
+          <TextField fullWidth={true} floatingLabelText="学号" type="number" ref="studentId" 
+            onBlur={this.checkStudentIdValidation.bind(this)}
+            errorText={this.state.studentIdError} 
+          /><br />
+          <TextField fullWidth={true} floatingLabelText="手机" type="number" ref="phone" 
+            onBlur={this.checkPhoneValidation.bind(this)}
+            errorText={this.state.phoneError} 
+          /><br />
+          <TextField fullWidth={true} floatingLabelText="邮箱" type="text" ref="email" 
+            onBlur={this.checkEmailValidation.bind(this)}
+            errorText={this.state.emailError} 
+          /><br />
+          <div className="col-sm-12 col-xs-12" style={{display: "flex", justifyContent: "center", marginTop: 30, marginBottom: 30}}>
+            <RaisedButton label="注册" primary={true} type="submit" style={{marginRight: 30, backgroundColor: "#1fbcd3"}}/>
+            <RaisedButton label="清空" default={true} onClick={this.clearInput.bind(this)}/>
+          </div>
         </div>
       </form>
     )

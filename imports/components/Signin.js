@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { browserHistory } from 'react-router';
+import { Image } from 'react-bootstrap';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -10,10 +11,6 @@ export default class Signin extends Component {
   constructor(props) {
     super(props);
     this.state = {}
-  }
-
-  componentWillMount() {
-    // if (!Meteor.user()) browserHistory.push('/signin');
   }
 
   handleSubmit(event) {
@@ -27,6 +24,7 @@ export default class Signin extends Component {
         console.log(err.reason);
       } else {
         console.log('登录成功');
+        browserHistory.push('/profile');
       }
     }
 
@@ -39,15 +37,19 @@ export default class Signin extends Component {
 
   render() {
     return (
-      <form className="col-sm-12 col-xs-12" onSubmit={this.handleSubmit.bind(this)} style={{paddingLeft: 15, paddingRight: 15}}>
-        <TextField fullWidth={true} floatingLabelText="用户名" type="text" ref="userName"
-          errorText={this.state.userNameError} 
-        /><br />
-        <TextField fullWidth={true} floatingLabelText="密码" type="password" ref="password"
-          errorText={this.state.passwordError} 
-        /><br />
-        <div className="col-sm-12 col-xs-12" style={{display: "flex", justifyContent: "center", marginTop: 30}}>
-          <RaisedButton label="登录" primary={true} type="submit" style={{marginRight: 30, backgroundColor: "#1fbcd3"}}/>
+      <form className="col-sm-12 col-xs-12" onSubmit={this.handleSubmit.bind(this)} 
+        style={{paddingLeft: 15, paddingRight: 15, height: "100%", display: "flex", alignItems: "center"}}>
+        <div className="col-sm-12 col-xs-12">
+          <Image src="images/logo.png" responsive style={{marginBottom: 15, padding: 15}}/>
+          <TextField fullWidth={true} floatingLabelText="用户名" type="text" ref="userName"
+            errorText={this.state.userNameError} 
+          /><br />
+          <TextField fullWidth={true} floatingLabelText="密码" type="password" ref="password"
+            errorText={this.state.passwordError} 
+          /><br />
+          <div className="col-sm-12 col-xs-12" style={{display: "flex", justifyContent: "center", marginTop: 30}}>
+            <RaisedButton label="登录" primary={true} type="submit" style={{marginRight: 30, backgroundColor: "#1fbcd3"}}/>
+          </div>
         </div>
       </form>
     );

@@ -1,42 +1,20 @@
-import { Meteor } from 'meteor/meteor';
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { Button } from 'react-bootstrap';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import SigninPage from './SigninPage';
+import ContainerPage from './ContainerPage';
 
 export default class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      scrollTop: 0
-    };
-  }
-  // componentWillMount() {
-  //   window.addEventListener('scroll', this.handleScroll);
-  // }
-  // componentWillUnmount() {
-  //   window.removeEventListener('scroll', this.handleScroll);
-  // }
-  // handleScroll = () => this.setState({scrollTop: $(window).scrollTop()});
-  // scrollToTop() {
-  //   $(window).animate({scrollTop: 0}, 1000);
-  // }
   render() {
     return (
-      <MuiThemeProvider>
-        <div>
-          {this.props.children}
-          {/* {this.state.scrollTop > 100 && <Button style={styles.backToTopButton}><a href="#" onClick={this.scrollToTop}>↑</a></Button>} */}
-        </div>
-      </MuiThemeProvider>
+      <Router>
+        <MuiThemeProvider>
+          <div>
+            <Route path="/" component={ContainerPage} />
+            <Route path="/signin" component={SigninPage}/>
+          </div>
+        </MuiThemeProvider>
+      </Router>
     );
-  }
-}
-
-const styles = {
-  backToTopButton: {
-    position: "fixed",
-    right: 30,
-    bottom: 30,
   }
 }
