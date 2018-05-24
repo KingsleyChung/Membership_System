@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import { Redirect } from 'react-router-dom';
 import { browserHistory } from 'react-router';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -7,7 +8,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 export default class Signup extends Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      redirect: false,
+    }
   }
 
   handleSubmit(event) {
@@ -27,7 +30,7 @@ export default class Signup extends Component {
         console.log(err.reason);
       } else {
         console.log('注册成功');
-        browserHistory.push('/profile');
+        this.setState({redirect: true});
       }
     }
 
@@ -119,6 +122,9 @@ export default class Signup extends Component {
   }
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect push to="/" />
+    }
     return (
       <form className="col-sm-12 col-xs-12" onSubmit={this.handleSubmit.bind(this)} 
         style={{paddingLeft: 15, paddingRight: 15, height: "100%", display: "flex", alignItems: "center"}}>

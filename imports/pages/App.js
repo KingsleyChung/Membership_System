@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import SigninPage from './SigninPage';
-import ContainerPage from './ContainerPage';
+import Container from './Container';
+import ActivityDetail from './ActivityDetail';
+import ActivityEdit from './ActivityEdit';
 
 export default class App extends Component {
   render() {
     return (
       <Router>
         <MuiThemeProvider>
-          <div>
-            <Route path="/" component={ContainerPage} />
+          <Switch>
             <Route path="/signin" component={SigninPage}/>
-          </div>
+            <Route path="/activityedit/:id" component={ActivityEdit}/>
+            <Route path="/activity/:id" component={ActivityDetail}/>
+            <Route path="/" component={Container} />
+          </Switch>
         </MuiThemeProvider>
       </Router>
     );

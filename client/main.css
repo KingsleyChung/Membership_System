@@ -6397,6 +6397,7 @@ html {
     margin-left: -30%;
     text-align: center;
     list-style: none;
+    visibility: hidden;/*修改*/
   }
   .carousel-indicators li {
     display: inline-block;
