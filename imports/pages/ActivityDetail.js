@@ -53,7 +53,7 @@ class ActivityDetail extends Component {
   }
 
   checkIsApplied() {
-    if (!Meteor.user) {
+    if (!Meteor.user()) {
       return false;
     }
     var that = this;

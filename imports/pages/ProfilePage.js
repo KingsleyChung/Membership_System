@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
 import { RaisedButton } from 'material-ui';
@@ -7,7 +8,7 @@ const ThinDivider = () => (
   <div className="col-xs-12 col-sm-12" style={{height: 1, backgroundColor: "#E2E2E2", marginTop: 4}}/>
 )
 
-export default class ProfilePage extends Component {
+class ProfilePage extends Component {
 
   componentWillMount() {
     if (!Meteor.user()) {
@@ -59,7 +60,7 @@ export default class ProfilePage extends Component {
 
             {Meteor.user() && 
               <div className="col-xs-12 col-sm-12" style={{padding: 0, marginLeft: -15, position: "fixed", bottom: 52, display: "flex", justifyContent: "center"}}>
-                <RaisedButton primary={true} label="退出登录" onClick={()=>{Meteor.logout()}}/>
+                <RaisedButton primary={true} label="退出登录" onClick={()=>{Meteor.logout(); this.props.callbackParent(0)}}/>
               </div>
             }
           </div>
@@ -68,3 +69,5 @@ export default class ProfilePage extends Component {
     )
   }
 }
+
+export default withRouter(ProfilePage);

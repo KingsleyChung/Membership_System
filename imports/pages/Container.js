@@ -36,13 +36,17 @@ export default class Container extends Component {
     });
   };
 
+  handleChildChanged = (slideIndex) => {
+    this.setState({slideIndex});
+  }
+
   render() {
     return (
       <div className="container-fluid" style={{padding: 0}}>
         <div style={{height: this.state.height - 48}}>
           {this.state.slideIndex == 0 && <HomePage />}
           {this.state.slideIndex == 1 && <ActivityPage />}
-          {this.state.slideIndex == 2 && <ProfilePage />}
+          {this.state.slideIndex == 2 && <ProfilePage callbackParent={this.handleChildChanged}/>}
         </div>
 
         <Tabs style={{width: "100%", position: "fixed", bottom: 0}} value={this.state.slideIndex} onChange={this.handleChange}>

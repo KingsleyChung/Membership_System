@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Activities } from '../api/collection';
 import { ActivityCard } from '../components/ActivitiesContainer';
@@ -26,7 +27,7 @@ class ActivityPage extends Component {
   }
 }
 
-export default withTracker(() => {
+export default withRouter(withTracker(() => {
   handleActivity = Meteor.subscribe('Activity.all');
   activitiesArray = [];
   if (handleActivity.ready() && Meteor.user()) {
@@ -37,4 +38,4 @@ export default withTracker(() => {
   return {
     activities: activitiesArray,
   }
-})(ActivityPage)
+})(ActivityPage));

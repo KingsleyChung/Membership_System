@@ -44,7 +44,9 @@ class ActivityEdit extends Component {
     if (!Meteor.user()) {
       this.props.history.push('/signin')
     } else if (Meteor.user().profile.premission == 0 || Meteor.user().profile.premission == 1) {
-      this.setState({premissionStatus: true, errorStatus: true});
+      this.setState({premissionStatus: true});
+    } else {
+      this.setState({errorStatus: true});
     }
   }
 
@@ -233,7 +235,7 @@ class ActivityEdit extends Component {
               modal={true}
               open={this.state.errorStatus}
               actions={[
-                <FlatButton label="确定" primary={true} onClick={()=>{this.setState({errorStatus: false}); this.props.history.goBack()}}/>]}
+                <FlatButton label="确定" primary={true} onClick={()=>{this.setState({errorStatus: false}); this.props.history.push('/')}}/>]}
             >
               无访问权限
             </Dialog>
@@ -246,7 +248,6 @@ class ActivityEdit extends Component {
 
 export default withTracker((props) => {
   Meteor.subscribe('file.all') //test
-  console.log(Images.find({}).fetch()[0])
   var editStatus = props.match.params.id == "new" ? false : true;
   if (editStatus) {
     handleActivity = Meteor.subscribe('Activity.one', props.match.params.id);
