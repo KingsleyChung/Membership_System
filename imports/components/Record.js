@@ -143,7 +143,7 @@ class Record extends Component {
                   <div className="col-xs-12 col-sm-12" style={{padding: 0}}>
                     <div className="col-xs-12 col-sm-12" style={{textAlign: "center", fontSize: 20, overflow: "wrap", marginBottom: 16}}>{this.state.currentRecord.title + ' - 扫码签到'}</div>
                     <div className="col-xs-12 col-sm-12" style={{displey: "flex", justifyContent: "center"}}>
-                      <QRCode size={200} value={"http://192.168.199.202:3000/takeattendance/" + this.props.activity._id + '/' + this.state.currentRecord._id}/>
+                      <QRCode size={200} value={"http://139.199.59.246/takeattendance/" + this.props.activity._id + '/' + this.state.currentRecord._id}/>
                     </div>
                   </div>
                   <div className="col-xs-12 col-sm-12" style={{display: "flex", justifyContent: "center"}}>
