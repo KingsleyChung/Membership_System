@@ -29,7 +29,7 @@ class ActivityEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      premissionStatus: false,
+      permissionStatus: false,
       errorStatus: false,
       confirmStatus: false,
       resultStatus: false,
@@ -43,8 +43,8 @@ class ActivityEdit extends Component {
   componentWillMount() {
     if (!Meteor.user()) {
       this.props.history.push('/signin')
-    } else if (Meteor.user().profile.premission == 0 || Meteor.user().profile.premission == 1) {
-      this.setState({premissionStatus: true});
+    } else if (Meteor.user().profile.permission == 0 || Meteor.user().profile.permission == 1) {
+      this.setState({permissionStatus: true});
     } else {
       this.setState({errorStatus: true});
     }
@@ -144,7 +144,7 @@ class ActivityEdit extends Component {
   render() {
     return (
       <div className="container-fluid" style={{padding: 0, paddingBottom: 46}}>
-        {this.state.premissionStatus ?
+        {this.state.permissionStatus ?
           <div className="container-fluid" style={{padding: 0}}>
             <form onSubmit={this.hanldeSubmit.bind(this)}>
               <Card style={{marginBottom: 10}}  onClick={this.handleUploadImageClick.bind(this)}>
