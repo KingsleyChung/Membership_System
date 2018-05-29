@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Activities } from '../api/collection';
 import AvatarList from '../components/AvatarList';
+import ActivityInfo from '../components/ActivityInfo';
+import Record from '../components/Record';
+import QRCode from 'qrcode.react';
 import { Card, CardMedia, CardTitle } from 'material-ui/Card';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
+import RaisedButton from 'material-ui/RaisedButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-
-const ThickDivider = () => (
-  <div className="col-xs-12 col-sm-12" style={{height: 10, backgroundColor: "#F3F3F3", borderTop: "1px solid #E2E2E2", borderBottom: "1px solid #E2E2E2", marginTop: 10, marginBottom: 10}}/>
-)
+import ArrowDropRight from 'material-ui/svg-icons/navigation/arrow-drop-down';
 
 const ThinDivider = () => (
   <div className="col-xs-12 col-sm-12" style={{height: 1, backgroundColor: "#E2E2E2", marginTop: 10, marginBottom: 10}}/>
@@ -26,6 +26,8 @@ class ActivityDetail extends Component {
     this.state = {
       confirmStatus: false,
       resultStatus: false,
+      attendanceStatus: false,
+      menuStatus: false,
     }
   }
 
@@ -33,9 +35,31 @@ class ActivityDetail extends Component {
     if (!Meteor.user()) {
       this.props.history.push("/signin");
     }
-    console.log('报名');
     Meteor.call('activity.apply', Meteor.userId(), this.props.activity._id);
-    this.setState({confirmStatus: false, resultStatus: true})
+    this.setState({confirmStatus: false})
+    this.handleMenuClose();
+  }
+
+  handleQRShow = () => {
+    this.setState({attendanceStatus: true, menuStatus: false});
+  }
+
+  handleMenuOpen = () => {
+    this.setState({menuStatus: true});
+  }
+
+  handleMenuClose = () => {
+    this.setState({menuStatus: false});
+  }
+
+  checkIsApplied() {
+    if (!Meteor.user) {
+      return false;
+    }
+    var that = this;
+    return Meteor.user().profile.activities.some((id)=>{
+      return id == that.props.activity._id;
+    });
   }
 
   render() {
@@ -62,56 +86,38 @@ class ActivityDetail extends Component {
       <div className="container-fluid" style={{padding: 0, paddingBottom: 46}}>
         {this.props.activity && 
           <div className="container-fluid" style={{padding: 0}}>
-            <Card style={{marginBottom: 10}}>
-              <CardMedia
-                overlay={<CardTitle title={this.props.activity.title} />}
-              >
-                <img src={this.props.activity.cover} alt="" />
-              </CardMedia>
-            </Card>
+            <ActivityInfo activity={this.props.activity} />
+
             <div className="col-xs-12 col-sm-12" style={{position: "fixed", top: 0, display: "flex", justifyContent: "space-between", alignItems: "center", padding: 0}}>
               <div style={{fontSize: 18, marginLeft: 16}}  onClick={() => {this.props.history.goBack()}}>
                 <i className="fas fa-chevron-left" style={{color: "white"}}></i>
               </div>
               <IconMenu
-                iconButtonElement={<IconButton iconStyle={{color: "white"}}><MoreVertIcon /></IconButton>}
+                iconButtonElement={<IconButton iconStyle={{color: "white"}}><MoreVertIcon onClick={this.handleMenuOpen}/></IconButton>}
                 anchorOrigin={{horizontal: 'right', vertical: 'top'}}
                 targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                style={{zIndex: 5}}
+                open={this.state.menuStatus}
               >
                 <MenuItem primaryText="收藏" />
                 <MenuItem primaryText="分享" />
+                <Divider />
+                {Meteor.user() && (Meteor.user().profile.permission == '0' || Meteor.user().profile.permission == '0') && 
+                  <div>
+                    <MenuItem primaryText="编辑" onClick={()=>{this.props.history.push('/activityedit/' + this.props.activity._id)}}/>
+                    <MenuItem primaryText="签到" onClick={this.handleQRShow}
+                      // rightIcon={<ArrowDropRight />}
+                      // anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+                      // targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                      // menuItems={[
+                      //   <MenuItem primaryText="发布签到" onClick={this.handleQRShow}/>,
+                      //   <MenuItem primaryText="查看记录" />,
+                      // ]}
+                    />
+                  </div>
+                }
               </IconMenu>
             </div>
-            <div className="col-xs-12 col-sm-12">
-              <div style={{borderBottom: "1px solid #E2E2E2", fontSize: 24, paddingBottom: 6, marginBottom: 6}}>活动简介</div>
-              <div>{this.props.activity.description}</div>
-            </div>
-            <ThickDivider />
-            <div className="col-xs-12 col-sm-12" style={{display: "flex", alignItems: "center"}}>
-              <i className="far fa-calendar-alt"></i>
-              <div style={{marginLeft: 16}}>{moment(this.props.activity.start).format("YYYY-MM-DD") + " -- " + moment(this.props.activity.end).format("YYYY-MM-DD")}</div>
-            </div>
-            <ThinDivider />
-            <div className="col-xs-12 col-sm-12" style={{display: "flex", alignItems: "center"}}>
-              <i className="fas fa-map-marker-alt"></i>
-              <div style={{marginLeft: 16}}>{this.props.activity.location}</div>
-            </div>
-            <ThinDivider />
-            <div className="col-xs-12 col-sm-12" style={{display: "flex", alignItems: "center"}}>
-              <i className="fas fa-sort-numeric-down"></i>
-              <div style={{marginLeft: 16}}>{'最多' + this.props.activity.memberCapacity + '人报名'}</div>
-            </div>
-            <ThinDivider />
-            <div className="col-xs-12 col-sm-12" style={{display: "flex", alignItems: "center"}}>
-              {this.props.activity.attendance ? <i className="far fa-calendar-check"></i> : <i className="far fa-calendar-times"></i>}
-              <div style={{marginLeft: 16}}>{this.props.activity.attendance ? "需要签到" : "无需签到"}</div>
-            </div>
-            <ThickDivider />
-            <div className="col-xs-12 col-sm-12">
-              <div style={{borderBottom: "1px solid #E2E2E2", fontSize: 24, paddingBottom: 6, marginBottom: 6}}>参与者 ({this.props.activity.participatorCount})</div>
-              <AvatarList participators={this.props.activity.participators} count={this.props.activity.participatorCount}/>
-            </div>
-
             <Dialog
               title="确认报名"
               actions={confirmActions}
@@ -129,8 +135,29 @@ class ActivityDetail extends Component {
               报名成功
             </Dialog>
 
+            <Dialog
+              modal={true}
+              open={this.state.attendanceStatus}
+              onRequestClose={()=>{this.setState({attendanceStatus: false})}}
+            >
+              {/* <div className="col-xs-12 col-sm-12" style={{padding: 0}}>
+                <div className="col-xs-12 col-sm-12" style={{textAlign: "center", fontSize: 20, overflow: "wrap", marginBottom: 16}}>扫码签到</div>
+                <div className="col-xs-12 col-sm-12" style={{displey: "flex", justifyContent: "center"}}>
+                  <QRCode size={200} value={"http://192.168.199.202/takeattendance/" + this.props.activity._id}/>
+                </div>
+              </div>
+              <div className="col-xs-12 col-sm-12" style={{display: "flex", justifyContent: "center"}}>
+                <FlatButton
+                  label="关闭"
+                  primary={true}
+                  onClick={()=>{this.setState({attendanceStatus: false})}}
+                />
+              </div> */}
+              <Record activity={this.props.activity}/>
+            </Dialog>
+
             <div className="col-xs-12 col-sm-12" style={{position: "fixed", bottom: 0, padding: 4}}>
-              <RaisedButton className="col-xs-12 col-sm-12" label="报名" primary={true} style={{padding: 0}} onClick={() => {this.setState({confirmStatus: true})}}/>
+              <RaisedButton className="col-xs-12 col-sm-12" label={this.checkIsApplied() ? "已报名" : "报名"} primary={true} style={{padding: 0}} onClick={() => {if (!this.checkIsApplied()) this.setState({confirmStatus: true})}}/>
             </div>
           </div>
         }

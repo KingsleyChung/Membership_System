@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import { Image } from 'react-bootstrap';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
-export default class Signin extends Component {
+class Signin extends Component {
   
   constructor(props) {
     super(props);
@@ -26,8 +26,7 @@ export default class Signin extends Component {
         console.log(err.reason);
       } else {
         console.log('登录成功');
-        console.log(Meteor.user())
-        this.setState({redirect: true})
+        this.props.history.goBack();
       }
     }
 
@@ -39,9 +38,6 @@ export default class Signin extends Component {
   }
 
   render() {
-    if (this.state.redirect) {
-      return <Redirect push to="/" />
-    }
     return (
       <form className="col-sm-12 col-xs-12" onSubmit={this.handleSubmit.bind(this)} 
         style={{paddingLeft: 15, paddingRight: 15, height: "100%", display: "flex", alignItems: "center"}}>
@@ -61,3 +57,5 @@ export default class Signin extends Component {
     );
   }
 }
+
+export default withRouter(Signin);

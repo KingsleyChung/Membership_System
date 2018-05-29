@@ -5,8 +5,13 @@ import SigninPage from './SigninPage';
 import Container from './Container';
 import ActivityDetail from './ActivityDetail';
 import ActivityEdit from './ActivityEdit';
+import TakeAttendance from './TakeAttendance';
+import VConsole from 'vconsole';
 
 export default class App extends Component {
+  initVConsole() {
+    vConsole = new VConsole();
+  }
   render() {
     return (
       <Router>
@@ -15,8 +20,10 @@ export default class App extends Component {
             <Route path="/signin" component={SigninPage}/>
             <Route path="/activityedit/:id" component={ActivityEdit}/>
             <Route path="/activity/:id" component={ActivityDetail}/>
+            <Route path="/takeattendance/:activityId/:recordId" component={TakeAttendance} />
             <Route path="/" component={Container} />
           </Switch>
+          {/* {this.initVConsole()} */}
         </MuiThemeProvider>
       </Router>
     );

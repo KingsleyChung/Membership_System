@@ -5,6 +5,12 @@ import { ActivityCard } from '../components/ActivitiesContainer';
 
 class ActivityPage extends Component {
 
+  componentWillMount() {
+    if (!Meteor.user()) {
+      this.props.history.push('/signin')
+    }
+  }
+
   renderActivities() {
     return this.props.activities.map((activity) => {
       return <ActivityCard key={activity._id} activity={activity} />
