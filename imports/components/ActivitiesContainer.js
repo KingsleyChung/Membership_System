@@ -2,24 +2,25 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Activities } from '../api/collection';
-import { Image } from 'react-bootstrap';
 import Paper from 'material-ui/Paper';
 
 import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
-import Subheader from 'material-ui/Subheader';
 import Avatar from 'material-ui/Avatar';
-import {grey400, darkBlack, lightBlack} from 'material-ui/styles/colors';
-import IconButton from 'material-ui/IconButton';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
+import { Card, CardMedia, CardTitle } from 'material-ui/Card';
 
 export const ActivityCard = ({activity}) => (
   <div className="col-sm-12 col-xs-12" style={{marginBottom: 15}}>
     <Paper zDepth={2} style={{padding: 0, overflow: "hidden", borderRadius: 4}}>
-      <Image src={activity.cover || "images/federer.png"} responsive/>
-      <div>{activity.title}</div>
+      {/* <Image src={activity.cover || "images/federer.png"} responsive/>
+      <div>{activity.title}</div> */}
+      <Card style={{marginBottom: 10}}>
+        <CardMedia
+          overlay={<CardTitle title={activity.title} />}
+        >
+          <img src={activity.cover || "images/federer.png"} alt="" />
+        </CardMedia>
+      </Card>
       <div>{moment(activity.start).format('YYYY-MM-DD')}</div>
       <div>{moment(activity.end).format('YYYY-MM-DD')}</div>
       <div>{activity.location}</div>

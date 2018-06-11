@@ -50,7 +50,7 @@ class Signin extends Component {
             errorText={this.state.passwordError} 
           /><br />
           <div className="col-sm-12 col-xs-12" style={{display: "flex", justifyContent: "center", marginTop: 30}}>
-            <RaisedButton label="登录" primary={true} type="submit" style={{marginRight: 30, backgroundColor: "#1fbcd3"}}/>
+            <RaisedButton label="登录" primary={true} type="submit" style={{backgroundColor: "#1fbcd3"}}/>
           </div>
         </div>
       </form>

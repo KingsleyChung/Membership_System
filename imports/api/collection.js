@@ -32,12 +32,12 @@ if (Meteor.isServer) {
       Activities.update({_id: activityId}, {$addToSet: {participators: userId}});
       var participatorCount = Activities.find({_id: activityId}).fetch()[0].participators.length;
       Activities.update({_id: activityId}, {$set: {participatorCount: participatorCount}});
-      var profile = Meteor.users.find({_id: userId}).fetch()[0].profile;
-      if (!profile.activities.some((id) => {
+      var activities = Meteor.users.find({_id: userId}).fetch()[0].activities ? Meteor.users.find({_id: userId}).fetch()[0].activities : [];
+      if (!activities.some((id) => {
         return id == activityId;
       })) {
-        profile.activities.push(activityId);
-        Meteor.users.update({_id: userId}, {$set: {profile: profile}});
+        activities.push(activityId);
+        Meteor.users.update({_id: userId}, {$set: {activities: activities}});
       }
     },
     'record.add'(title, activityId) {

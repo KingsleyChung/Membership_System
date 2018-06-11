@@ -37,14 +37,10 @@ export default class SigninPage extends Component {
   render() {
     return (
       <div className="container-fluid" style={{padding: 0}}>
-        <SwipeableViews
-          index={this.state.slideIndex}
-          onChangeIndex={this.handleChange}
-          style={{height: this.state.height - 48}}
-        >
-          <Signin />
-          <Signup />
-        </SwipeableViews>
+        <div className="container-fluid" style={{padding: 0, height: this.state.height - 48}}>
+          {this.state.slideIndex == 0 && <Signin />}
+          {this.state.slideIndex == 1 && <Signup />}
+        </div>
 
         <Tabs
           className="col-sm-12 col-xs-12"

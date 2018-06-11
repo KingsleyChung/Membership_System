@@ -14,7 +14,11 @@ class ActivityPage extends Component {
 
   renderActivities() {
     return this.props.activities.map((activity) => {
-      return <ActivityCard key={activity._id} activity={activity} />
+      return (
+        <div key={activity._id} onClick={() => {this.props.history.push('/activity/' + activity._id)}}>
+          <ActivityCard activity={activity} />
+        </div>
+      )
     })
   }
 
@@ -28,10 +32,11 @@ class ActivityPage extends Component {
 }
 
 export default withRouter(withTracker(() => {
+  Meteor.subscribe('Users.one');
   handleActivity = Meteor.subscribe('Activity.all');
   activitiesArray = [];
-  if (handleActivity.ready() && Meteor.user()) {
-    Meteor.user().profile.activities.map((activityId) => {
+  if (handleActivity.ready() && Meteor.user().activities) {
+    Meteor.user().activities.map((activityId) => {
       activitiesArray.push(Activities.find({_id: activityId}).fetch()[0]);
     })
   }

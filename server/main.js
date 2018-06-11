@@ -26,3 +26,13 @@ Meteor.publish('Record.some', function(activityId) {
 Meteor.publish('Users.some', function(ids) {
   return Meteor.users.find({_id: {$in: ids}});
 });
+
+Meteor.publish('Users.one', function () {
+  if (this.userId) {
+    return Meteor.users.find({ _id: this.userId }, {
+      fields: { activities: 1}
+    });
+  } else {
+    this.ready();
+  }
+});

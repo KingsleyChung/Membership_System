@@ -53,11 +53,11 @@ class ActivityDetail extends Component {
   }
 
   checkIsApplied() {
-    if (!Meteor.user()) {
+    if (!Meteor.user() || !Meteor.user().activities) {
       return false;
     }
     var that = this;
-    return Meteor.user().profile.activities.some((id)=>{
+    return Meteor.user().activities.some((id)=>{
       return id == that.props.activity._id;
     });
   }
@@ -136,23 +136,10 @@ class ActivityDetail extends Component {
             </Dialog>
 
             <Dialog
-              modal={true}
+              modal={false}
               open={this.state.attendanceStatus}
               onRequestClose={()=>{this.setState({attendanceStatus: false})}}
             >
-              {/* <div className="col-xs-12 col-sm-12" style={{padding: 0}}>
-                <div className="col-xs-12 col-sm-12" style={{textAlign: "center", fontSize: 20, overflow: "wrap", marginBottom: 16}}>扫码签到</div>
-                <div className="col-xs-12 col-sm-12" style={{displey: "flex", justifyContent: "center"}}>
-                  <QRCode size={200} value={"http://192.168.199.202/takeattendance/" + this.props.activity._id}/>
-                </div>
-              </div>
-              <div className="col-xs-12 col-sm-12" style={{display: "flex", justifyContent: "center"}}>
-                <FlatButton
-                  label="关闭"
-                  primary={true}
-                  onClick={()=>{this.setState({attendanceStatus: false})}}
-                />
-              </div> */}
               <Record activity={this.props.activity}/>
             </Dialog>
 
