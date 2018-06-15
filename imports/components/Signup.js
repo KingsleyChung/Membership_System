@@ -74,8 +74,8 @@ export default class Signup extends Component {
   }
 
   checkUserNameValidation() {
-    if (!/[a-zA-Z0-9_]{6,20}/.test(ReactDOM.findDOMNode(this.refs.userName).children[1].value)) {
-      this.setState({userNameError: '用户名只能包含6-20位字母、数字、下划线'})
+    if (!/[a-zA-Z0-9_]{5,20}/.test(ReactDOM.findDOMNode(this.refs.userName).children[1].value)) {
+      this.setState({userNameError: '用户名只能包含5-20位字母、数字、下划线'})
     } else {
       this.setState({userNameError: ''})
     }

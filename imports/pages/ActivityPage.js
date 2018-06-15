@@ -25,6 +25,7 @@ class ActivityPage extends Component {
   render() {
     return (
       <div style={{paddingTop: 15, paddingBottom: 48, overflow: "auto"}}>
+        <div className="col-xs-12 col-sm-12" style={{fontSize: 24, marginBottom: 10}}>已报名活动</div>
         {this.props.activities && this.renderActivities()}
       </div>
     )

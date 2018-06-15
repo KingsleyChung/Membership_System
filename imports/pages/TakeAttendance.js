@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Redirect, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { Records, Activities } from '../api/collection';
 import Dialog from 'material-ui/Dialog';
 import { FlatButton } from 'material-ui';
@@ -30,11 +30,14 @@ class TakeAttendance extends Component {
   componentWillMount() {
     if (!Meteor.user()) {
       this.props.history.push("/signin")
+    } else {
+      this.takeAttendance();
     }
   }
 
   takeAttendance() {
       Meteor.call('record.takeAttendance', Meteor.user()._id, this.props.match.params.activityId, this.props.match.params.recordId, (err, result) => {
+        console.log(err, result)
         if (err) {
           this.setState({dialogMsg: err.message, dialogStatus: true, historyButtonStatus: false});
         } else {
@@ -66,15 +69,8 @@ class TakeAttendance extends Component {
   }
 
   render() {
-    if (!Meteor.user()) {
-      return (
-        <div>
-        </div>
-      )
-    }
     return (
       <div>
-        {this.takeAttendance()}
         {this.state.dialogStatus && 
           <Dialog
             modal={true}

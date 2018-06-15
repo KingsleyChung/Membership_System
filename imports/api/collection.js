@@ -50,12 +50,11 @@ if (Meteor.isServer) {
     'record.takeAttendance'(userId, activityId, recordId) {
       var activity = Activities.find({_id: activityId}).fetch()[0];
       if (!activity) {
-        throw Meteor.Error('活动不存在');
+        throw new Meteor.Error('活动不存在');
       }
-      if (!activity.participators.some((id)=>{
-        return id == userId;
-      })) {
-        throw Meteor.Error('您未报名此活动');
+      if (activity.participators.indexOf(userId) == -1) {
+        console.log('Throw Error')
+        throw new Meteor.Error('您未报名此活动');
       }
       Records.update({_id: recordId}, {$addToSet: {participators: userId}});
     }

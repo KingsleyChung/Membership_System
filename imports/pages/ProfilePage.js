@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import { withTracker } from 'meteor/react-meteor-data';
 import { withRouter } from 'react-router-dom';
+import RecordBlock from '../components/RecordBlock';
 import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
-import { RaisedButton } from 'material-ui';
-import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
 
 const ThinDivider = () => (
@@ -11,11 +11,20 @@ const ThinDivider = () => (
 )
 
 class ProfilePage extends Component {
-
   componentWillMount() {
     if (!Meteor.user()) {
       this.props.history.push('/signin')
     }
+  }
+
+  renderRecords() {
+    return Meteor.user().activities.map((activity) => {
+      return (
+        <div key={activity}>
+          <RecordBlock activityId={activity} />
+        </div>
+      )
+    })
   }
 
   render() {
@@ -46,22 +55,20 @@ class ProfilePage extends Component {
                 <FlatButton  primary={true} label="个人设置" onClick={()=>{this.props.history.push('/profiledetail')}}/>
               </div>
             </Paper>
-              
-            <Paper className="col-sm-12 col-xs-12" zDepth={2} style={{borderRadius: 4}} >
-              <div>{Meteor.user().username}</div>
-              <ThinDivider />
-              <div>{Meteor.user().profile.studentId}</div>
-              <ThinDivider />
-              <div>{Meteor.user().emails[0].address}</div>
-              <ThinDivider />
 
-            </Paper>
+            <div className="col-sm-12 col-xs-12" style={{marginTop: -30, padding: 0}}>
+              <div style={{fontSize: 24}}>签到情况</div>
+            </div>
 
-            <Paper className="col-sm-12 col-xs-12" zDepth={2} style={{borderRadius: 4, marginTop: 20}} >
-              <div style={{fontSize: 24, marginTop: 10}}>签到情况</div>
-              <ThinDivider />
-              <div></div>
-            </Paper>
+            <div className="col-sm-12 col-xs-12" style={{padding: 0, paddingBottom: 48}}>
+              {Meteor.user().activities ? 
+                this.renderRecords()
+                :
+                <Paper zDepth={2} style={{borderRadius: 4, display: "flex", justifyContent: "center", padding: 10}}>
+                  <div style={{fontSize: 20}}>无签到记录</div>
+                </Paper>
+              }
+            </div>
           </div>
         }
       </div>
@@ -69,4 +76,7 @@ class ProfilePage extends Component {
   }
 }
 
-export default withRouter(ProfilePage);
+export default withRouter(withTracker(() => {
+  Meteor.subscribe('Users.one');
+  return {}
+})(ProfilePage));

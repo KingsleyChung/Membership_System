@@ -18,7 +18,7 @@ export default class ActivityInfo extends Component {
           <CardMedia
             overlay={<CardTitle title={this.props.activity.title} />}
           >
-            <img src={this.props.activity.cover} alt="" />
+            <img src={this.props.activity.cover ? this.props.activity.cover : "/images/federer.png"} alt="" />
           </CardMedia>
         </Card>
         <div className="col-xs-12 col-sm-12">

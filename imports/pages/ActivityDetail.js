@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Activities } from '../api/collection';
-import AvatarList from '../components/AvatarList';
 import ActivityInfo from '../components/ActivityInfo';
 import Record from '../components/Record';
-import QRCode from 'qrcode.react';
-import { Card, CardMedia, CardTitle } from 'material-ui/Card';
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
@@ -14,7 +11,6 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import ArrowDropRight from 'material-ui/svg-icons/navigation/arrow-drop-down';
 
 const ThinDivider = () => (
   <div className="col-xs-12 col-sm-12" style={{height: 1, backgroundColor: "#E2E2E2", marginTop: 10, marginBottom: 10}}/>
@@ -34,6 +30,7 @@ class ActivityDetail extends Component {
   handleApply() {
     if (!Meteor.user()) {
       this.props.history.push("/signin");
+      return;
     }
     Meteor.call('activity.apply', Meteor.userId(), this.props.activity._id);
     this.setState({confirmStatus: false})

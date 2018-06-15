@@ -12,6 +12,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import DatePicker from 'material-ui/DatePicker';
 import FlatButton from 'material-ui/FlatButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
 
 class HomePage extends Component {
 
@@ -60,6 +61,11 @@ class HomePage extends Component {
           </Paper>
         </div>
         <ActivitiesContainer sortOrder={this.state.sortOrder} displayMode={this.state.displayMode}/>
+        {!Meteor.user() && 
+          <FloatingActionButton style={{position: "fixed", bottom: 58, right: 10}} onClick={()=>{this.props.history.push("/signin")}}>
+            <i className="fas fa-sign-in-alt" style={{fontSize: 20}}></i>
+          </FloatingActionButton>
+        }
       </div>
     )
   }

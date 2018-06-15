@@ -4,7 +4,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Activities } from '../api/collection';
 import Paper from 'material-ui/Paper';
 
-import {List, ListItem} from 'material-ui/List';
+import { List, ListItem } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
 import { Card, CardMedia, CardTitle } from 'material-ui/Card';
@@ -12,8 +12,6 @@ import { Card, CardMedia, CardTitle } from 'material-ui/Card';
 export const ActivityCard = ({activity}) => (
   <div className="col-sm-12 col-xs-12" style={{marginBottom: 15}}>
     <Paper zDepth={2} style={{padding: 0, overflow: "hidden", borderRadius: 4}}>
-      {/* <Image src={activity.cover || "images/federer.png"} responsive/>
-      <div>{activity.title}</div> */}
       <Card style={{marginBottom: 10}}>
         <CardMedia
           overlay={<CardTitle title={activity.title} />}
@@ -21,11 +19,20 @@ export const ActivityCard = ({activity}) => (
           <img src={activity.cover || "images/federer.png"} alt="" />
         </CardMedia>
       </Card>
-      <div>{moment(activity.start).format('YYYY-MM-DD')}</div>
-      <div>{moment(activity.end).format('YYYY-MM-DD')}</div>
-      <div>{activity.location}</div>
-      <div>{activity.attendance ? "需要签到" : "无需签到"}</div>
-      <div>{activity.participatorCount}</div>
+      <div className="col-xs-12 col-sm-12">
+        <div style={{fontSize: 18}}>
+          <i className="far fa-clock" style={{marginRight: 10}}></i>
+          {moment(activity.start).format('YYYY-MM-DD')+' ---- '+moment(activity.end).format('YYYY-MM-DD')}
+        </div>
+        <div style={{fontSize: 18}}>
+          <i className="fas fa-map-marker-alt" style={{marginRight: 12}}></i>
+          {activity.location}
+        </div>
+        <div style={{marginTop: 8, marginBottom: 12, display: "flex"}}>
+          <div style={{fontSize: 14, backgroundColor: activity.attendance ? "#EF5350" : "#BDBDBD", color: "white", padding: "4px 8px", borderRadius: 20}}>{activity.attendance ? "需要签到" : "无需签到"}</div>
+          <div style={{fontSize: 14, backgroundColor: "#4FC3F7", color: "white", padding: "4px 8px", borderRadius: 20, marginLeft: 10}}>已报名人数 : {activity.participatorCount}/{activity.memberCapacity}</div>
+        </div>
+      </div>
     </Paper>
   </div>
 )
